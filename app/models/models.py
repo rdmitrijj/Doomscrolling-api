@@ -5,7 +5,7 @@ import datetime
 Base = declarative_base()
 
 
-class AppSpendTime(Base):
+class AppsTime(Base):
 
     __tablename__ = "appstime"
 
