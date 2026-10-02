@@ -1,15 +1,19 @@
 from pydantic import BaseModel
 import datetime
 
-
-
 class InputSchema(BaseModel):
     
     date: datetime.date
     app: str
     seconds: int
 
-class OutputSchema(BaseModel):
-    date: datetime.date
+class OutputSchemaAvgDays(BaseModel):
     app: str
     seconds: int
+
+class OutputSchemaSumDays(BaseModel):
+    apps: list[OutputSchemaAvgDays]
+    total: int
+
+class DaysSchema(BaseModel):
+    days: int
