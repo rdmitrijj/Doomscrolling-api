@@ -1,14 +1,11 @@
-from typing import Annotated
+
 from sqlalchemy import select
-from fastapi import Depends
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func
 
 from ..models.tables import AppsTime
 from ..schemas.schemas import InputSchema
-from ..db.db import db_dependency
-
 
 import datetime
 
@@ -49,9 +46,3 @@ class DoomscrollingRepository:
 
         return result
     
-
-async def get_repo(db: db_dependency):
-    return DoomscrollingRepository(db)
-
-
-repo_dependency=  Annotated[DoomscrollingRepository, Depends(get_repo)]

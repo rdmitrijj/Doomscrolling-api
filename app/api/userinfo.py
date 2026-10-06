@@ -4,66 +4,28 @@ from sqlalchemy.exc import IntegrityError
 from app.schemas.schemas import (
     InputSchema,
     DaysSchema,
-    OutputSchema,
     OutputSchemaDays,
 )
-from ..repositories.doomscroll_db import repo_dependency
+from app.api.deps import service_dependency
+
 
 router = APIRouter(prefix="/load_user_info", tags=["user_info"])
 
+@router.post("/doomscrolled_time",status_code=status.HTTP_201_CREATED,)
+async def doomscrolled_time(service: service_dependency, payload: DaysSchema) -> OutputSchemaDays:
+    return await service.list_time(payload.days)
+    
+@router.post(path="/average_wasted_time",status_code = status.HTTP_200_OK,)
+async def calculate_avgtime(service: service_dependency, payload: DaysSchema) -> OutputSchemaDays:
+
+    return await service.list_avg_time(payload.days)
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def load_info(payload: InputSchema, db: repo_dependency):
-
+async def load_info(service: service_dependency, payload: InputSchema):
     try:
-        await db.load_info(payload)
+        await service.load_info(payload)
     except IntegrityError:
         raise HTTPException(
-            status_code=403, detail="App with this name already loaded this day"
+            status_code=409, detail="App with this name already loaded this day"
         )
-
-@router.post(
-    "/average_spend_time",
-    status_code=status.HTTP_201_CREATED,
-    response_model=OutputSchemaDays,
-)
-
-async def calculate_avgtime(
-    db: repo_dependency, payload: DaysSchema
-) -> OutputSchemaDays:
-
-    result = await db.calculate_avg_time(payload.days)
-    
-    result = result.mappings().all()
-
-    total = 0
-    counter = 0
-    for row in result:
-        counter += 1
-        total += row["seconds"]
-    average = round(total/counter)
-    
-    apps = [OutputSchema(app=row["app"], seconds=row["seconds"]) for row in result]
-
-    return OutputSchemaDays(apps=apps, total=average)
-
-
-@router.post(
-    "/doomscrolled_time",
-    status_code=status.HTTP_201_CREATED,
-    response_model=OutputSchemaDays,
-)
-
-async def doomscrolled_time(db: repo_dependency, payload: DaysSchema):
-
-
-    result = await db.calculate_all_time(payload.days)
-    result = result.mappings().all()
-
-
-    total = sum(row["seconds"] for row in result)
-    apps = [OutputSchema(app=row["app"], seconds=row["seconds"]) for row in result]
-
-    return OutputSchemaDays(apps=apps, total=total)
-
 

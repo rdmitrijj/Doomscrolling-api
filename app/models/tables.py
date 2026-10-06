@@ -1,5 +1,5 @@
 
-from sqlalchemy.orm import declarative_base, Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import UniqueConstraint
 from .base import Base
 import datetime
