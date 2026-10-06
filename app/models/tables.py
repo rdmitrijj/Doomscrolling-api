@@ -1,10 +1,9 @@
 
 from sqlalchemy.orm import declarative_base, Mapped, mapped_column
 from sqlalchemy import UniqueConstraint
-
+from .base import Base
 import datetime
 
-Base = declarative_base()
 
 
 class AppsTime(Base):

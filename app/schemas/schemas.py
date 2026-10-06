@@ -8,12 +8,12 @@ class InputSchema(BaseModel):
     app: str
     seconds: int
 
-class OutputSchemaAvgDays(BaseModel):
+class OutputSchema(BaseModel):
     app: str
     seconds: int
 
-class OutputSchemaSumDays(BaseModel):
-    apps: list[OutputSchemaAvgDays]
+class OutputSchemaDays(BaseModel):
+    apps: list[OutputSchema]
     total: int
 
 class DaysSchema(BaseModel):
