@@ -1,6 +1,6 @@
 import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class InputSchema(BaseModel):
     
@@ -17,4 +17,4 @@ class OutputSchemaDays(BaseModel):
     total: int
 
 class DaysSchema(BaseModel):
-    days: int
+    days: int = Field(gt=0)
