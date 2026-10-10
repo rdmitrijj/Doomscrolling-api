@@ -1,13 +1,20 @@
 services:
+  backend:
+    build: . # показывает то, что мы добавляем этот image на основе dockerfile, и именно эти команды нужны
+    env_file: .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
   db:
     image: postgres:16
-    container_name: doomscrolling_api
+    container_name: doomscrolling_pg
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 volumes:
