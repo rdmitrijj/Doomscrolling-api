@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+
 import datetime
 
 from app.repositories.doomscroll_db import DoomscrollingRepository
