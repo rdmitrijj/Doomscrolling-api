@@ -33,6 +33,4 @@ async def load_info(service: service_dependency, payload: InputSchema):
 @router.get("doomscrolled_time/{date}", status_code=status.HTTP_200_OK)
 async def doomscrolled_time_by_day(date: datetime.date, service: service_dependency):
     result = await service.get_by_day(date)
-    if result is None:
-        raise HTTPException(status_code=404, detail="Not Found")
     return result

@@ -15,3 +15,4 @@ class AppsTime(Base):
     app: Mapped[str] = mapped_column()
     seconds: Mapped[int] = mapped_column()
     __table_args__ = (UniqueConstraint(date, app, name="uq_appstime_date_app"),)
+
