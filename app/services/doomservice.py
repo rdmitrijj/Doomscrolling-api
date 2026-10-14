@@ -3,7 +3,7 @@ import datetime
 
 from app.repositories.doomscroll_db import DoomscrollingRepository
 
-from app.schemas.schemas import InputSchema, OutputSchema, OutputSchemaDays, OutputSpecialDaySchema
+from app.schemas.schemas import InputSchema, OutputSchema, OutputSchemaDays, OutputSpecialDaySchema, DateTimeSchema
 
 class DoomscrollService:
     def __init__(self, repo: DoomscrollingRepository) -> None:
@@ -44,4 +44,7 @@ class DoomscrollService:
         return OutputSchemaDays(apps=apps, total=average)
     
     async def load_info(self, payload: InputSchema) -> None:
-            return await self.repo.load_info(payload)
+        await self.repo.load_info(payload)
+
+    async def delete_day(self, date: datetime.date):
+        await self.repo.delete_day(date)

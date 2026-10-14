@@ -23,3 +23,6 @@ class OutputSchemaDays(BaseModel):
 
 class DaysSchema(BaseModel):
     days: int = Field(gt=0)
+
+class DateTimeSchema(BaseModel):
+    date: datetime.date

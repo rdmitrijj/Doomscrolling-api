@@ -2,4 +2,4 @@
 
 ## It is cool
 
-it will do some king of things
+it will do some kind of things

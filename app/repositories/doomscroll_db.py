@@ -1,12 +1,12 @@
 from fastapi import HTTPException
 
-from sqlalchemy import select
+from sqlalchemy import select, delete
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func
 
 from ..models.tables import AppsTime
-from ..schemas.schemas import InputSchema
+from ..schemas.schemas import InputSchema, DateTimeSchema
 
 import datetime
 
@@ -18,12 +18,16 @@ class DoomscrollingRepository:
         result = await self.db.scalars(select(AppsTime))
         return list(result.all())
 
-    async def get_by_day(self, date):
+    async def get_by_day(self, date: datetime.date):
         result = await self.db.scalars(select(AppsTime).where(AppsTime.date == date))
         return list(result.all())
 
     async def load_info(self, payload: InputSchema) -> None:
         self.db.add(AppsTime(**payload.model_dump()))
+        await self.db.commit()
+
+    async def delete_day(self, date: datetime.date):
+        await self.db.execute(delete(AppsTime).where(AppsTime.date == date))
         await self.db.commit()
 
     async def calculate_avg_time(self, days: int):
